@@ -1,7 +1,7 @@
 PREFIX ?= /usr
 BINDIR ?= $(PREFIX)/bin
 SYS := $(shell gcc -dumpmachine)
-GITVER := $(shell git describe --tags)
+#GITVER := $(shell git describe --tags)
 INSTALL_DATA := -pDm755
 
 ifeq ($(GITVER),)
@@ -13,7 +13,7 @@ endif
 # environment where things likely will work -- as well as anything
 # works on the bajillion of different Linux environments
 ifneq (, $(findstring linux, $(SYS)))
-LIBS = -lpcap -lm -lrt -ldl -lpthread
+LIBS = -lpaho-mqtt3c -lpthread
 INCLUDES =
 FLAGS2 = 
 endif
