@@ -57,7 +57,7 @@ int main(void) {
 
     /* connect to mqtt */
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
-        syslog (LOG_NOTICE, "Failed to connect, return code %d\n", rc);
+        syslog (LOG_NOTICE, "Failed to connect, return code: %d", rc);
         exit(-1);
     }
 
