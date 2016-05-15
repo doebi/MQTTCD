@@ -13,8 +13,8 @@ endif
 # environment where things likely will work -- as well as anything
 # works on the bajillion of different Linux environments
 ifneq (, $(findstring linux, $(SYS)))
-LIBS = -lpaho-mqtt3c -lpthread
-INCLUDES =
+LIBS = -lpaho-mqtt3c -lpthread 
+INCLUDES = `pkg-config --cflags --libs libnotify`
 FLAGS2 = 
 endif
 
