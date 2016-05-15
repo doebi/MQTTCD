@@ -1,11 +1,11 @@
 #include "MQTTCD.h"
 
-void delivered(void *context, MQTTClient_deliveryToken dt) {
+void onsent(void *context, MQTTClient_deliveryToken dt) {
     syslog(LOG_NOTICE, "Message with token value %d delivery confirmed", dt);
-    deliveredtoken = dt;
+    onsenttoken = dt;
 }
 
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+int onmessage(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
     char* payloadptr = message->payload;
     char msg[message->payloadlen+1];
     strcpy(msg, payloadptr);
@@ -23,7 +23,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-void connlost(void *context, char *cause) {
+void ondisconnect(void *context, char *cause) {
     syslog(LOG_NOTICE, "Connection lost: %s", cause);
 }
 
@@ -80,7 +80,7 @@ int main(void) {
     conn_opts.cleansession = 1;
 
     /* set mqtt callbacks */
-    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
+    MQTTClient_setCallbacks(client, NULL, ondisconnect, onmessage, onsent);
 
     /* connect to mqtt */
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
@@ -93,7 +93,7 @@ int main(void) {
     MQTTClient_subscribe(client, TOPIC, QOS);
 
     while (1) {
-        sleep(30); // wait 30 seconds
+        sleep(3); // wait 3 seconds
     }
 
     notify_uninit();
