@@ -1,8 +1,8 @@
 #include "MQTTCD.h"
 
-void onsent(void *context, MQTTClient_deliveryToken dt) {
+void ondelivered(void *context, MQTTClient_deliveryToken dt) {
     syslog(LOG_NOTICE, "Message with token value %d delivery confirmed", dt);
-    onsenttoken = dt;
+    deliveredtoken = dt;
 }
 
 int onmessage(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
@@ -11,7 +11,7 @@ int onmessage(void *context, char *topicName, int topicLen, MQTTClient_message *
     strcpy(msg, payloadptr);
     msg[message->payloadlen] = '\0';
 
-    syslog(LOG_NOTICE, "Message arrived");
+    //syslog(LOG_NOTICE, "Message arrived");
     NotifyNotification * notification = notify_notification_new (topicName,
                                                                  msg,
                                                                  "dialog-information");
@@ -80,7 +80,7 @@ int main(void) {
     conn_opts.cleansession = 1;
 
     /* set mqtt callbacks */
-    MQTTClient_setCallbacks(client, NULL, ondisconnect, onmessage, onsent);
+    MQTTClient_setCallbacks(client, NULL, ondisconnect, onmessage, ondelivered);
 
     /* connect to mqtt */
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
