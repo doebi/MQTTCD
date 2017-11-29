@@ -9,8 +9,9 @@
 
 #define ADDRESS     "tcp://mqtt.devlol.org:1883"
 #define CLIENTID    "user@notebook"
-#define TOPIC       "#"
-#define QOS         1
+#define TOPIC       "doebi/notify/#"
+#define QOS         0
 #define TIMEOUT     10000L
 
 volatile MQTTClient_deliveryToken deliveredtoken;
+void mqtt_connect();

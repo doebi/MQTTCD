@@ -58,7 +58,3 @@ install: bin/mqttcd
 	install $(INSTALL_DATA) bin/mqttcd $(DESTDIR)$(BINDIR)/mqttcd
 	
 default: bin/mqttcd
-
-redeploy: bin/mqttcd
-	killall -9 mqttcd
-	./bin/mqttcd
